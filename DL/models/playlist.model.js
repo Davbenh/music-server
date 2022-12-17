@@ -4,10 +4,9 @@ const playlistSchema = new mongoose.Schema({
   title: {
     type: String,
   },
-  userId: {
+  user: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "user",
-    required: true,
+    ref: 'users'
   },
   songList: [
     {
@@ -16,6 +15,14 @@ const playlistSchema = new mongoose.Schema({
         required: true,
       },
       title: {
+        type: String,
+        required: true,
+      },
+      duration: {
+        type: String,
+        required: true,
+      },
+      uploaded: {
         type: String,
         required: true,
       },

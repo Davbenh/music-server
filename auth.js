@@ -2,11 +2,15 @@ const JWT = require("jsonwebtoken");
 const secret = process.env.SECRET;
 
 
-async function createToken(data) {
-  return JWT.sign({ data }, secret, { expiresIn: "1h" });
+const createToken = async(data) => {
+  
+  let TOKEN = JWT.sign({ data }, secret, { expiresIn: "1h" });
+  return TOKEN;
+  
+ 
 }
 
-async function validToken(req, res, next) {
+const validToken = async(req, res, next) => {
   try {
     const data = req.headers.authorization.replace("Bearer ", "");
     let token = JWT.verify(data, secret);
