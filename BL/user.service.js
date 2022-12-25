@@ -42,4 +42,16 @@ const getAllUsers = async (data) => {
     res.send(err);
   }
 };
-module.exports = { createNewUser, loginUser, getAllUsers };
+
+const getUser = async (data) => {
+  try {
+    let user = await userDL.readOne({email: data});
+    return user;
+  } catch (err) {
+    return res.status(403).send({
+      message: "No user found!",
+    });
+  }
+};
+
+module.exports = { createNewUser, loginUser, getAllUsers,getUser };

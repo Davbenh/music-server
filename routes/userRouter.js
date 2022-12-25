@@ -2,6 +2,8 @@ const express = require('express');
 const userService = require('../BL/user.service');
 const router = express.Router();
 const auth = require('../auth');
+const JWT = require("jsonwebtoken");
+const secret = process.env.SECRET;
 
 
 
@@ -15,23 +17,16 @@ router.post('/signup', async (req, res) => {
   }
   });
 
+
   router.post('/login', async (req, res) => {
     try {
+      console.log(req.body);
     let token = await userService.loginUser(req.body)
-    console.log(token);
       res.send({token});
   } catch (err) {
     res.status(401).send(err);
   }})
 
-  router.get('/',auth.validToken,async(req, res) => {
-    try {
-      
-    let result = await userService.getAllUsers()
-   
-      res.send(result);
-  } catch (err) {
-    res.send(err);
-  }})
+  router.get('/',auth.validToken)
 
   module.exports = router;
