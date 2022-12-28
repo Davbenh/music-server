@@ -7,21 +7,13 @@ const createToken = async (data) => {
 };
 
 const validToken = async (req, res, next) => {
-  try {
-    const token = req.headers.Authorization;
-    console.log(token);
-    if (token) {
-      const toCheck = await JWT.verify(token.replace("Bearer ", ""), secret)
-      if (toCheck !== undefined && toCheck !==null) {
-        next();
-      } else {
-        throw new Error("Invalid token");
-      }
-    } else {
-      throw new Error("Invalid token");
-    }
-  } catch (err) {
-    res.send(err);
+  const token = req.headers.authorization.split(" ")[1];
+  const tokenValidity = JWT.verify(token, secret);
+console.log(tokenValidity);
+  if (tokenValidity) {
+    next();
+  } else {
+    res.sendStatus(401).json({ error: err.message });
   }
 };
 

@@ -27,6 +27,27 @@ router.post('/signup', async (req, res) => {
     res.status(401).send(err);
   }})
 
-  router.get('/',auth.validToken)
+  router.get('/',auth.validToken,async(req, res) => {
+    try {
+      if(req.headers.authorization === undefined) {
+        throw new Error(`Invalid authorization`)
+      }
+      const token = req.headers.authorization.split(' ')[1];
+      console.log(token);
+      if (token) {
+         const data =  JWT.verify(token, secret)
+         console.log(data);
+         let user = await userService.getUser(data.data)
+         res.send(user)
+        } else {
+          console.log("userrouter error")
+          res.status(401).send(err);
+        }
+    } catch (err) {
+     console.log(err)
+      
+    
+    }
+  })
 
   module.exports = router;
